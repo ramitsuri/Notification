@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Notification</string>
+    <string name="button_notification_access">Give Access</string>
+</resources>
