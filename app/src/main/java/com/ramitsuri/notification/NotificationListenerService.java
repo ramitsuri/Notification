@@ -12,9 +12,9 @@ public class NotificationListenerService extends android.service.notification.No
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        if(notificationHelper.isMonitoredNotification(sbn, "")){
+        if(notificationHelper.isMonitoredNotification(sbn)){
             NotificationListenerService.this.cancelNotification(sbn.getKey());
-            notificationHelper.generateNewNotification(getApplicationContext(), sbn.getNotification(), "", "");
+            notificationHelper.generateNewNotification(getApplicationContext(), sbn.getNotification(), "Amazon Shopping", "Your package has been delivered.");
         }
     }
 

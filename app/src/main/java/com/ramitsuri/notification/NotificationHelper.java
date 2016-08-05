@@ -16,6 +16,8 @@ public class NotificationHelper {
 
     private static NotificationHelper helper;
 
+    public String selectedPackage;
+
     public static NotificationHelper getInstance(){
         if(helper == null)
             helper = new NotificationHelper();
@@ -32,9 +34,9 @@ public class NotificationHelper {
         notificationManager.notify((int)System.currentTimeMillis(),notificationCompat.build());
     }
 
-    public boolean isMonitoredNotification(StatusBarNotification sbn, String packageName) {
+    public boolean isMonitoredNotification(StatusBarNotification sbn) {
         String monitoredPackage = sbn.getPackageName();
-        if(monitoredPackage.equalsIgnoreCase(packageName))
+        if(monitoredPackage.equalsIgnoreCase(selectedPackage))
             return true;
         return false;
     }

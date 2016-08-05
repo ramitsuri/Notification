@@ -25,6 +25,11 @@
         android:layout_marginTop="40dp"
         android:layout_below="@id/textViewNotificationAccess"
         android:layout_centerHorizontal="true" />
-
-
+    <Spinner
+        android:id="@+id/spinnerPackages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonNotificationAccess"
+        android:layout_marginTop="40dp">
+    </Spinner>
 </RelativeLayout>
