@@ -5,32 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.provider.CalendarContract;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatSpinner;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
-    Button buttonNotificationAccess;
-    TextView textViewNotificationAccess;
     Spinner spinnerPackages;
     PackageManager packageManager;
     ArrayList<String> applications;
@@ -39,9 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        buttonNotificationAccess = (Button)findViewById(R.id.buttonNotificationAccess);
-        buttonNotificationAccess.setOnClickListener(this);
-        textViewNotificationAccess = (TextView)findViewById(R.id.textViewNotificationAccess);
         spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
         packageManager = getPackageManager();
         applications = getApplications();
@@ -51,14 +37,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         spinnerPackages.setAdapter(spinnerAdapter);
         spinnerPackages.setOnItemSelectedListener(this);
         setText(isNotificationAccessEnabled());
-    }
-
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.buttonNotificationAccess){
-            Intent settingsIntent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-            startActivity(settingsIntent);
-        }
     }
 
     @Override
@@ -79,13 +57,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setText(boolean status) {
+        final Intent settingsIntent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
         if(status) {
-            textViewNotificationAccess.setText("Access granted!");
-            textViewNotificationAccess.setTextColor(Color.GREEN);
+            Snackbar.make(findViewById(R.id.relativeLayout), getString(R.string.snackBar_access_granted), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.snackBar_action_revoke), new View.OnClickListener(){
+
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(settingsIntent);
+                        }
+                    }).show();
         }
         else{
-            textViewNotificationAccess.setText("Please grant notification access");
-            textViewNotificationAccess.setTextColor(Color.RED);
+            Snackbar.make(findViewById(R.id.relativeLayout), getString(R.string.snackBar_grant_access), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.snackBar_action_grant), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startActivity(settingsIntent);
+                        }
+                    }).show();
         }
 
     }

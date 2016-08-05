@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Notification</string>
     <string name="button_notification_access">Give Access</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="snackBar_access_granted">Notification access granted!</string>
+    <string name="snackBar_grant_access">Please grant notification access</string>
+    <string name="snackBar_action_grant">Grant</string>
+    <string name="snackBar_action_revoke">Revoke</string>
+
 </resources>
