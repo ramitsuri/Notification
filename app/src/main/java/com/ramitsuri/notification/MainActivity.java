@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,12 +19,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     Spinner spinnerPackages;
     PackageManager packageManager;
     ArrayList<String> applications;
     NotificationHelper notificationHelper;
+    FloatingActionButton fabAddRule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPackages.setAdapter(spinnerAdapter);
         spinnerPackages.setOnItemSelectedListener(this);
+        fabAddRule = (FloatingActionButton)findViewById(R.id.fab);
+        fabAddRule.setOnClickListener(this);
         setText(isNotificationAccessEnabled());
     }
 
@@ -100,5 +104,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.fab) {
+            
+        }
     }
 }

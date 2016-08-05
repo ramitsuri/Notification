@@ -11,6 +11,8 @@ public class NotificationRule {
 
     private NewNotification newNotification;
 
+    private boolean isEnabled;
+
     public String getPackageName(){
         return this.packageName;
     }
@@ -33,6 +35,14 @@ public class NotificationRule {
 
     public void setNewNotification(NewNotification newNotification){
         this.newNotification = newNotification;
+    }
+
+    public boolean getIsEnabled(){
+        return this.isEnabled;
+    }
+
+    public void setEnabled(boolean enabledStatus){
+        this.isEnabled = enabledStatus;
     }
 
 }
