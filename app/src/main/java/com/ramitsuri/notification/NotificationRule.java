@@ -5,6 +5,8 @@ package com.ramitsuri.notification;
  */
 public class NotificationRule {
 
+    private int id;
+
     private String packageName;
 
     private String filterText;
@@ -12,6 +14,14 @@ public class NotificationRule {
     private NewNotification newNotification;
 
     private boolean isEnabled;
+
+    public int getId(){
+        return this.id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
 
     public String getPackageName(){
         return this.packageName;

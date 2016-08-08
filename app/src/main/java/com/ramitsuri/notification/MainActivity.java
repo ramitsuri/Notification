@@ -10,10 +10,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
+import com.ramitsuri.notification.db.SQLHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,25 +24,40 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
 
-    Spinner spinnerPackages;
-    PackageManager packageManager;
-    ArrayList<String> applications;
-    NotificationHelper notificationHelper;
-    FloatingActionButton fabAddRule;
+    //Spinner spinnerPackages;
+    private PackageManager packageManager;
+    private ArrayList<String> applications;
+    private NotificationHelper notificationHelper;
+    private FloatingActionButton fabAddRule;
+    private RecyclerView recyclerViewRules;
+    private RecyclerView.Adapter recyclerViewAdapter;
+    private RecyclerView.LayoutManager recyclerViewLManager;
+    private ArrayList<NotificationRule> notificationRules;
+    private SQLHelper sqlHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
+        //spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
         packageManager = getPackageManager();
         applications = getApplications();
         notificationHelper = NotificationHelper.getInstance();
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, applications);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPackages.setAdapter(spinnerAdapter);
-        spinnerPackages.setOnItemSelectedListener(this);
         fabAddRule = (FloatingActionButton)findViewById(R.id.fab);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, applications);
+        recyclerViewRules = (RecyclerView) findViewById(R.id.recyclerViewRules);
+        recyclerViewLManager = new LinearLayoutManager(this);
+        sqlHelper = SQLHelper.getInstance(this);
+        notificationRules = sqlHelper.getAllRules();
+        recyclerViewAdapter = new RuleAdapter(notificationRules);
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinnerPackages.setAdapter(spinnerAdapter);
+        //spinnerPackages.setOnItemSelectedListener(this);
         fabAddRule.setOnClickListener(this);
+        recyclerViewRules.setHasFixedSize(true);
+        recyclerViewRules.setLayoutManager(recyclerViewLManager);
+        recyclerViewRules.setAdapter(recyclerViewAdapter);
+
         setText(isNotificationAccessEnabled());
     }
 
@@ -98,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        notificationHelper.selectedPackage = spinnerPackages.getItemAtPosition(i).toString();
+        //notificationHelper.selectedPackage = spinnerPackages.getItemAtPosition(i).toString();
     }
 
     @Override
@@ -109,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab) {
-            
+
         }
     }
 }
