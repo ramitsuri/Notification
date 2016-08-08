@@ -8,12 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.ramitsuri.notification.MainActivity"
     tools:showIn="@layout/activity_main">
-    <!--<Spinner
-        android:id="@+id/spinnerPackages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp">
-    </Spinner>-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewRules"
         android:scrollbars="vertical"

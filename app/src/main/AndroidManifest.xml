@@ -26,7 +26,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".AddRuleActivity"></activity>
+        <activity android:name=".AddRuleActivity"
+            android:label="Add new rule"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

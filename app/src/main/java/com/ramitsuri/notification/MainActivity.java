@@ -22,11 +22,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    //Spinner spinnerPackages;
-    private PackageManager packageManager;
-    private ArrayList<String> applications;
+
+
     private NotificationHelper notificationHelper;
     private FloatingActionButton fabAddRule;
     private RecyclerView recyclerViewRules;
@@ -38,12 +37,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
-        packageManager = getPackageManager();
-        applications = getApplications();
         notificationHelper = NotificationHelper.getInstance();
         fabAddRule = (FloatingActionButton)findViewById(R.id.fab);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, applications);
+
         recyclerViewRules = (RecyclerView) findViewById(R.id.recyclerViewRules);
         recyclerViewLManager = new LinearLayoutManager(this);
         sqlHelper = SQLHelper.getInstance(this);
@@ -51,9 +47,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         recyclerViewAdapter = new RuleAdapter(notificationRules);
         NotificationListener.refreshRules(this);
 
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinnerPackages.setAdapter(spinnerAdapter);
-        //spinnerPackages.setOnItemSelectedListener(this);
+
         fabAddRule.setOnClickListener(this);
         recyclerViewRules.setHasFixedSize(true);
         recyclerViewRules.setLayoutManager(recyclerViewLManager);
@@ -103,33 +97,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-    public ArrayList<String> getApplications() {
-        applications = new ArrayList<String>();
-        List<ApplicationInfo> packages = packageManager.getInstalledApplications(0);
-        for (ApplicationInfo packageInfo : packages) {
-            if( packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null ){
-                applications.add(packageInfo.packageName);
-            }
-        }
-        Collections.sort(applications);
-        return applications;
-    }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //notificationHelper.selectedPackage = spinnerPackages.getItemAtPosition(i).toString();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab) {
             Intent addRuleActivityIntent = new Intent(this, AddRuleActivity.class);
-            startActivity(addRuleActivityIntent);
+            MainActivity.this.startActivity(addRuleActivityIntent);
         }
     }
 }
