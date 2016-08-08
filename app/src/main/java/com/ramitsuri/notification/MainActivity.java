@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         sqlHelper = SQLHelper.getInstance(this);
         notificationRules = sqlHelper.getAllRules();
         recyclerViewAdapter = new RuleAdapter(notificationRules);
+        NotificationListener.refreshRules(this);
 
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //spinnerPackages.setAdapter(spinnerAdapter);
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         boolean isNotificationAccessEnabled = false;
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (NotificationListenerService.class.getName().equals(service.service.getClassName())) {
+            if (NotificationListener.class.getName().equals(service.service.getClassName())) {
                 isNotificationAccessEnabled = true;
             }
         }
@@ -127,7 +128,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab) {
-
+            Intent addRuleActivityIntent = new Intent(this, AddRuleActivity.class);
+            startActivity(addRuleActivityIntent);
         }
     }
 }

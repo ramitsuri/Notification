@@ -34,9 +34,9 @@ public class NotificationHelper {
         notificationManager.notify((int)System.currentTimeMillis(),notificationCompat.build());
     }
 
-    public boolean isMonitoredNotification(StatusBarNotification sbn) {
-        String monitoredPackage = sbn.getPackageName();
-        if(monitoredPackage.equalsIgnoreCase(selectedPackage))
+    public boolean isMonitoredNotification(StatusBarNotification sbn, NotificationRule rule) {
+        if(sbn.getNotification().extras.getString("android.text").toLowerCase().contains(rule.getFilterText().toLowerCase())
+                || sbn.getNotification().extras.getString("android.title").toLowerCase().contains(rule.getFilterText().toLowerCase()))
             return true;
         return false;
     }
