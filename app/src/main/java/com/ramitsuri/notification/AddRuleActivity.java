@@ -4,6 +4,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,22 +28,22 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     private PackageManager packageManager;
     SQLHelper sqlHelper;
     String packageName;
-    EditText editText1;
-    EditText editText2;
-    EditText editText3;
-    CheckBox checkBox1;
-    CheckBox checkBox2;
+    EditText editTextFilter;
+    EditText editTextTitle;
+    EditText editTextText;
+    CheckBox checkBoxOriginalApp;
+    SwitchCompat switchEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rule);
         spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
-        editText1 = (EditText)findViewById(R.id.editText1);
-        editText2 = (EditText)findViewById(R.id.editText2);
-        editText3 = (EditText)findViewById(R.id.editText3);
-        checkBox1 = (CheckBox)findViewById(R.id.checkBox1);
-        checkBox2 = (CheckBox)findViewById(R.id.checkBox2);
+        editTextFilter = (EditText)findViewById(R.id.editTextFilter);
+        editTextTitle = (EditText)findViewById(R.id.editTextTitle);
+        editTextText = (EditText)findViewById(R.id.editTextText);
+        checkBoxOriginalApp = (CheckBox)findViewById(R.id.checkBoxOriginalApp);
+        switchEnabled = (SwitchCompat)findViewById(R.id.checkBox2);
 
 
         packageManager = getPackageManager();
@@ -102,12 +103,12 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     private void addRule() {
         NotificationRule rule = new NotificationRule();
         rule.setPackageName(packageName);
-        rule.setFilterText(editText1.getText().toString());
-        rule.setEnabled(checkBox2.isChecked());
+        rule.setFilterText(editTextFilter.getText().toString());
+        rule.setEnabled(switchEnabled.isChecked());
         NewNotification notification = new NewNotification();
-        notification.setText(editText3.getText().toString());
-        notification.setTitle(editText2.getText().toString());
-        notification.setOpenOriginalApp(checkBox1.isChecked());
+        notification.setText(editTextText.getText().toString());
+        notification.setTitle(editTextTitle.getText().toString());
+        notification.setOpenOriginalApp(checkBoxOriginalApp.isChecked());
         rule.setNewNotification(notification);
         sqlHelper.createRule(rule);
     }
