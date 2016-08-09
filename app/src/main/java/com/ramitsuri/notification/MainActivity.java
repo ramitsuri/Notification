@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private NotificationHelper notificationHelper;
     private FloatingActionButton fabAddRule;
     private RecyclerView recyclerViewRules;
-    private RecyclerView.Adapter recyclerViewAdapter;
+    private RuleAdapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLManager;
     private ArrayList<NotificationRule> notificationRules;
     private SQLHelper sqlHelper;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerViewRules = (RecyclerView) findViewById(R.id.recyclerViewRules);
         recyclerViewLManager = new LinearLayoutManager(this);
         sqlHelper = SQLHelper.getInstance(this);
+        //addDummyData();
         notificationRules = sqlHelper.getAllRules();
         recyclerViewAdapter = new RuleAdapter(notificationRules);
         NotificationListener.refreshRules(this);
@@ -56,10 +57,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setText(isNotificationAccessEnabled());
     }
 
+    private void addDummyData() {
+        for(int i=0;i<5;i++) {
+            NotificationRule rule = new NotificationRule();
+            rule.setPackageName("com.whatsapp");
+            rule.setEnabled(true);
+            rule.setFilterText("ramit");
+            NewNotification not = new NewNotification();
+            not.setOpenOriginalApp(true);
+            not.setText("Your package has been delivered");
+            not.setTitle("Amazon Delivery");
+            rule.setNewNotification(not);
+            sqlHelper.createRule(rule);
+        }
+    }
+
     @Override
     public void onResume(){
         super.onResume();
         setText(isNotificationAccessEnabled());
+        notificationRules = sqlHelper.getAllRules();
+        recyclerViewAdapter.updateDataSet(notificationRules);
+        NotificationListener.refreshRules(this);
     }
 
     public boolean isNotificationAccessEnabled() {
@@ -105,5 +124,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent addRuleActivityIntent = new Intent(this, AddRuleActivity.class);
             MainActivity.this.startActivity(addRuleActivityIntent);
         }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        //sqlHelper.deleteAllRules();
     }
 }

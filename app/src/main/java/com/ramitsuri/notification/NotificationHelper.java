@@ -24,13 +24,16 @@ public class NotificationHelper {
         return helper;
     }
 
-    public void generateNewNotification(Context context, Notification notification, String notificationTitle, String notificationText) {
+    public void generateNewNotification(Context context, Notification notification, NotificationRule rule) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
-        notificationCompat.setContentTitle(notificationTitle)
-                    .setContentText(notificationText)
+        notificationCompat.setContentTitle(rule.getNewNotification().getTitle())
+                    .setContentText(rule.getNewNotification().getText())
                     .setSmallIcon(android.R.drawable.ic_notification_clear_all)
-                    .setContentIntent(notification.contentIntent);
+                    .setVibrate(new long[]{1000});
+        if(rule.getNewNotification().getOpenOriginalApp())
+                    notificationCompat.setContentIntent(notification.contentIntent);
+
         notificationManager.notify((int)System.currentTimeMillis(),notificationCompat.build());
     }
 
