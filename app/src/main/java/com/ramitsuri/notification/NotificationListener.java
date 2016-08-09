@@ -45,6 +45,7 @@ public class NotificationListener extends android.service.notification.Notificat
                     if (notificationHelper.isMonitoredNotification(sbn, rule)) {
                         NotificationListener.this.cancelNotification(sbn.getKey());
                         notificationHelper.generateNewNotification(getApplicationContext(), sbn.getNotification(), rule);
+                        break;
                     }
                 }
             }

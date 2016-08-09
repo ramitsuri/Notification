@@ -1,10 +1,17 @@
 package com.ramitsuri.notification;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.ramitsuri.notification.db.SQLHelper;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -21,16 +28,27 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
         protected TextView notificationTitle;
         protected TextView notificationText;
         protected TextView openOriginalApp;
-        protected TextView enabled;
+        protected SwitchCompat enabled;
+        private SQLHelper sqlHelper;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
+            this.sqlHelper = SQLHelper.getInstance(itemView.getContext());
             this.packageName = (TextView) itemView.findViewById(R.id.rulePackageName);
             this.filterText = (TextView) itemView.findViewById(R.id.ruleFilterText);
             this.notificationTitle = (TextView) itemView.findViewById(R.id.ruleNotificationTitle);
             this.notificationText = (TextView) itemView.findViewById(R.id.ruleNotificationText);
             this.openOriginalApp = (TextView) itemView.findViewById(R.id.ruleNotificationOpenOriginal);
-            this.enabled = (TextView) itemView.findViewById(R.id.ruleEnabled);
+            this.enabled = (SwitchCompat) itemView.findViewById(R.id.ruleEnabledToggle);
+            this.enabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    NotificationRule rule = rules.get(getAdapterPosition());
+                    rule.setEnabled(b);
+                    sqlHelper.editRule(rule);
+                    NotificationListener.refreshRules(compoundButton.getContext());
+                }
+            });
         }
     }
 
@@ -52,7 +70,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
         holder.notificationTitle.setText(rules.get(position).getNewNotification().getTitle());
         holder.notificationText.setText(rules.get(position).getNewNotification().getText());
         holder.openOriginalApp.setText(String.valueOf(rules.get(position).getNewNotification().getOpenOriginalApp()));
-        holder.enabled.setText(String.valueOf(rules.get(position).getIsEnabled()));
+        holder.enabled.setChecked(rules.get(position).getIsEnabled());
 
     }
 
