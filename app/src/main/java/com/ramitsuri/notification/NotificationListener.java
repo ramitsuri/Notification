@@ -39,6 +39,7 @@ public class NotificationListener extends android.service.notification.Notificat
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+
         for (NotificationRule rule: rules) {
             if(rule.getIsEnabled()){
                 if (sbn.getPackageName().equalsIgnoreCase(rule.getPackageName())) {

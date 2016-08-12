@@ -72,9 +72,9 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     public NotificationRule getRule(int id){
 
-        SQLiteDatabase db=getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         try {
-            Cursor cursor= db.query(TABLE_RULES, new String[]{KEY_ID,
+            Cursor cursor = db.query(TABLE_RULES, new String[]{KEY_ID,
                             KEY_PACKAGE_NAME, KEY_FILTER_TEXT,
                             KEY_NOTIFICATION_TITLE, KEY_NOTIFICATION_TEXT,
                             KEY_NOTIFICATION_ORIGINAL_APP, KEY_ENABLED}, KEY_ID+"=?",
@@ -94,10 +94,37 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         try {
             ArrayList<NotificationRule> listRules = new ArrayList<>();
-
-            String selectQuery = "SELECT * FROM " + TABLE_RULES;
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery(selectQuery, null);
+            Cursor cursor= db.query(TABLE_RULES, new String[]{KEY_ID,
+                            KEY_PACKAGE_NAME, KEY_FILTER_TEXT,
+                            KEY_NOTIFICATION_TITLE, KEY_NOTIFICATION_TEXT,
+                            KEY_NOTIFICATION_ORIGINAL_APP, KEY_ENABLED}, null,
+                    null, null, null, null, null);
+
+            if(cursor.moveToFirst())
+            {
+                do {
+                    NotificationRule rule = cursorToNotificationRule(cursor);
+                    listRules.add(rule);
+                }while (cursor.moveToNext());
+            }
+            return listRules;
+        }
+        catch (Exception e) {
+
+            return new ArrayList<>();
+        }
+    }
+
+    public ArrayList<NotificationRule> getAllEnabledRules(){
+        try {
+            ArrayList<NotificationRule> listRules = new ArrayList<>();
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor= db.query(TABLE_RULES, new String[]{KEY_ID,
+                            KEY_PACKAGE_NAME, KEY_FILTER_TEXT,
+                            KEY_NOTIFICATION_TITLE, KEY_NOTIFICATION_TEXT,
+                            KEY_NOTIFICATION_ORIGINAL_APP, KEY_ENABLED}, null,
+                    null, null, null, null, null);
 
             if(cursor.moveToFirst())
             {
