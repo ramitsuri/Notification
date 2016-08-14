@@ -35,10 +35,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
             super(itemView);
             this.sqlHelper = SQLHelper.getInstance(itemView.getContext());
             this.packageName = (TextView) itemView.findViewById(R.id.rulePackageName);
-            this.filterText = (TextView) itemView.findViewById(R.id.ruleFilterText);
+            //this.filterText = (TextView) itemView.findViewById(R.id.ruleFilterText);
             this.notificationTitle = (TextView) itemView.findViewById(R.id.ruleNotificationTitle);
             this.notificationText = (TextView) itemView.findViewById(R.id.ruleNotificationText);
-            this.openOriginalApp = (TextView) itemView.findViewById(R.id.ruleNotificationOpenOriginal);
+            //this.openOriginalApp = (TextView) itemView.findViewById(R.id.ruleNotificationOpenOriginal);
             this.enabled = (SwitchCompat) itemView.findViewById(R.id.ruleEnabledToggle);
             this.enabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -66,10 +66,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
         holder.packageName.setText(rules.get(position).getPackageName());
-        holder.filterText.setText(rules.get(position).getFilterText());
+        //holder.filterText.setText(rules.get(position).getFilterText());
         holder.notificationTitle.setText(rules.get(position).getNewNotification().getTitle());
         holder.notificationText.setText(rules.get(position).getNewNotification().getText());
-        holder.openOriginalApp.setText(String.valueOf(rules.get(position).getNewNotification().getOpenOriginalApp()));
+        //holder.openOriginalApp.setText(String.valueOf(rules.get(position).getNewNotification().getOpenOriginalApp()));
         holder.enabled.setChecked(rules.get(position).getIsEnabled());
 
     }

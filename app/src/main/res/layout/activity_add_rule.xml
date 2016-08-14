@@ -3,190 +3,186 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#353535"
     tools:context="com.ramitsuri.notification.AddRuleActivity">
+
     <RelativeLayout
+        android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:background="@color/colorPrimaryDark"
-        android:id="@+id/relativeLayout1">
+        android:translationZ="20dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Enable Rule"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:textColor="@android:color/white"/>
+            android:text="Enable Rule"
+            android:textColor="@android:color/white" />
+
         <android.support.v7.widget.SwitchCompat
+            android:id="@+id/checkBox2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox2"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical" />
     </RelativeLayout>
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+
+    <RelativeLayout
         android:id="@+id/card1"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        cardview:cardCornerRadius="1dp"
-        android:layout_below="@id/relativeLayout1">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/textViewIncoming"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="Incoming Notification"
-        android:textStyle="bold"
-        android:paddingBottom="5dp"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_height="180dp"
+        android:layout_below="@id/relativeLayout1"
+        android:layout_marginTop="0dp"
+        android:background="#222222">
 
-    <View
-        android:id="@+id/dividerIncoming"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/textViewIncoming"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="15dp"/>
+        <TextView
+            android:id="@+id/textViewIncoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
+            android:text="Incoming Notification"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textViewApp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:layout_below="@id/dividerIncoming"
-        android:layout_marginTop="10dp"
-        android:text="Application"
-        android:paddingBottom="5dp"
-        />
-    <Spinner
-        android:id="@+id/spinnerPackages"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignBaseline="@id/textViewApp"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/textViewApp"
-        android:dropDownWidth="220dp"
-        >
-    </Spinner>
+        <!--<View
+            android:id="@+id/dividerIncoming"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/textViewIncoming"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="15dp"/>-->
 
-    <TextView
-        android:id="@+id/textViewFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="Filter"
-        android:layout_below="@id/textViewApp"
-        android:layout_marginTop="10dp"
-        android:paddingBottom="15dp"
-        />
-    <EditText
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextFilter"
-        android:layout_below="@+id/spinnerPackages"
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@id/textViewFilter"
-        android:paddingBottom="5dp"
-         />
-        </RelativeLayout>
-</android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        <TextView
+            android:id="@+id/textViewApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewIncoming"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="5dp"
+            android:text="Application"
+            android:textColor="@color/colorAccent" />
+
+        <Spinner
+            android:id="@+id/spinnerPackages"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textViewApp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/textViewApp"
+            android:dropDownWidth="220dp"></Spinner>
+
+        <TextView
+            android:id="@+id/textViewFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewApp"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="5dp"
+            android:text="Filter"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/editTextFilter"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textViewFilter"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/spinnerPackages"
+            android:paddingBottom="5dp"
+            android:nextFocusForward="@+id/editTextTitle"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/card2"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:layout_below="@id/card1"
-        cardview:cardCornerRadius="1dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/textViewGenerated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="Generated Notification"
+        android:layout_marginTop="15dp"
+        android:background="#222222">
 
-        android:layout_marginTop="20dp"
-        android:paddingBottom="5dp"
-        android:textStyle="bold"
-        />
+        <TextView
+            android:id="@+id/textViewGenerated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="5dp"
+            android:text="Generated Notification"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
-    <View
-        android:id="@+id/dividerGenerated"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/textViewGenerated"
-        android:background="@color/colorPrimary"
-        android:paddingBottom="15dp"/>
+        <!--<View
+            android:id="@+id/dividerGenerated"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/textViewGenerated"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="15dp"/>-->
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="Title"
-        android:layout_below="@id/textViewGenerated"
-        android:layout_marginTop="10dp"
-        android:paddingBottom="5dp"
-        />
-    <EditText
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextTitle"
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewGenerated"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="5dp"
+            android:text="Title"
+            android:textColor="@color/colorAccent" />
 
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@id/textViewTitle"
-        />
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textViewTitle"
+            android:layout_alignParentRight="true"
+            android:nextFocusForward="@+id/editTextText"
+            android:nextFocusDown="@+id/editTextText"
+            android:inputType="textCapSentences"/>
 
-    <TextView
-        android:id="@+id/textViewText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="Text"
-        android:layout_below="@id/textViewTitle"
-        android:layout_marginTop="10dp"
-        android:paddingBottom="5dp"
-        />
-    <EditText
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextText"
-        android:layout_below="@id/editTextTitle"
-        android:layout_alignParentRight="true"
-        android:layout_alignBaseline="@id/textViewText"
-        />
+        <TextView
+            android:id="@+id/textViewText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTitle"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="5dp"
+            android:text="Text"
+            android:textColor="@color/colorAccent" />
 
-    <TextView
-        android:id="@+id/textViewOriginalApp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:text="Open Original App"
-        android:layout_below="@id/textViewText"
-        android:layout_marginTop="10dp"
-        android:paddingBottom="5dp"
-        />
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/checkBoxOriginalApp"
-        android:layout_below="@+id/editTextText"
-        android:layout_alignLeft="@id/editTextText"
-        android:layout_alignBaseline="@id/textViewOriginalApp"/>
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textViewText"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/editTextTitle"
+            android:inputType="textCapSentences"
+            android:nextFocusForward="@+id/checkBoxOriginalApp"
+            />
 
+        <TextView
+            android:id="@+id/textViewOriginalApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewText"
+            android:layout_marginTop="15dp"
+            android:paddingBottom="5dp"
+            android:text="Open Original App"
+            android:textColor="@color/colorAccent" />
 
-        </RelativeLayout>
-</android.support.v7.widget.CardView>
-
+        <CheckBox
+            android:id="@+id/checkBoxOriginalApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/textViewOriginalApp"
+            android:layout_alignLeft="@id/editTextText"
+            android:layout_below="@+id/editTextText"
+            android:text="" />
+    </RelativeLayout>
 </RelativeLayout>

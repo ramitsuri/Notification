@@ -5,9 +5,8 @@
     xmlns:notification="http://schemas.android.com/apk/res-auto" >
     <item
         android:id="@+id/action_done"
-        android:icon="@drawable/ic_done_white_24dp"
         android:orderInCategory="100"
-        android:title="Done"
+        android:title="Save"
         notification:showAsAction="always"
         />
 </menu>
