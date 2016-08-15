@@ -24,10 +24,10 @@ import java.util.List;
 
 public class AddRuleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Spinner spinnerPackages;
-    private ArrayList<String> applications;
+    private ArrayList<Application> applications;
     private PackageManager packageManager;
     SQLHelper sqlHelper;
-    String packageName;
+    Application selectedApplication;
     EditText editTextFilter;
     EditText editTextTitle;
     EditText editTextText;
@@ -49,18 +49,19 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
         packageManager = getPackageManager();
         applications = getApplications();
         sqlHelper = SQLHelper.getInstance(this);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, applications);
+        ArrayAdapter<Application> spinnerAdapter = new ArrayAdapter<Application>(this, android.R.layout.simple_spinner_item, applications);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPackages.setAdapter(spinnerAdapter);
         spinnerPackages.setOnItemSelectedListener(this);
     }
 
-    public ArrayList<String> getApplications() {
-        applications = new ArrayList<String>();
+    public ArrayList<Application> getApplications() {
+        applications = new ArrayList<Application>();
         List<ApplicationInfo> packages = packageManager.getInstalledApplications(0);
         for (ApplicationInfo packageInfo : packages) {
             if( packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null ){
-                applications.add(packageInfo.packageName);
+                String appName = packageManager.getApplicationLabel(packageInfo).toString();
+                applications.add(new Application(packageInfo.packageName, appName));
             }
         }
         Collections.sort(applications);
@@ -70,8 +71,8 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         //notificationHelper.selectedPackage = spinnerPackages.getItemAtPosition(i).toString();
-        packageName = spinnerPackages.getItemAtPosition(i).toString();
-        Toast.makeText(this, spinnerPackages.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
+        selectedApplication = (Application) spinnerPackages.getItemAtPosition(i);
+        //Toast.makeText(this, spinnerPackages.getItemAtPosition(i).toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -102,7 +103,8 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
 
     private void addRule() {
         NotificationRule rule = new NotificationRule();
-        rule.setPackageName(packageName);
+        rule.setPackageName(selectedApplication.getPackageName());
+        rule.setAppName(selectedApplication.getApplicationName());
         rule.setFilterText(editTextFilter.getText().toString());
         rule.setEnabled(switchEnabled.isChecked());
         NewNotification notification = new NewNotification();

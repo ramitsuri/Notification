@@ -6,14 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.ramitsuri.notification.db.SQLHelper;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +19,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
 
     private ArrayList<NotificationRule> rules;
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        protected TextView packageName;
+        protected TextView appName;
         protected TextView filterText;
         protected TextView notificationTitle;
         protected TextView notificationText;
@@ -34,7 +30,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
         public CustomViewHolder(View itemView) {
             super(itemView);
             this.sqlHelper = SQLHelper.getInstance(itemView.getContext());
-            this.packageName = (TextView) itemView.findViewById(R.id.rulePackageName);
+            this.appName = (TextView) itemView.findViewById(R.id.ruleAppName);
             //this.filterText = (TextView) itemView.findViewById(R.id.ruleFilterText);
             this.notificationTitle = (TextView) itemView.findViewById(R.id.ruleNotificationTitle);
             this.notificationText = (TextView) itemView.findViewById(R.id.ruleNotificationText);
@@ -65,7 +61,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
 
     @Override
     public void onBindViewHolder(CustomViewHolder holder, int position) {
-        holder.packageName.setText(rules.get(position).getPackageName());
+        holder.appName.setText(rules.get(position).getAppName());
         //holder.filterText.setText(rules.get(position).getFilterText());
         holder.notificationTitle.setText(rules.get(position).getNewNotification().getTitle());
         holder.notificationText.setText(rules.get(position).getNewNotification().getText());

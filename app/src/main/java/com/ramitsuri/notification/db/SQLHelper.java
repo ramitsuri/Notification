@@ -22,17 +22,28 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     private static SQLHelper instance = null;
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "notification";
     private static final String TABLE_RULES = "rules";
 
     private static final String KEY_ID = "ruleID";
     private static final String KEY_PACKAGE_NAME = "packageName";
+    private static final String KEY_APP_NAME = "appName";
     private static final String KEY_FILTER_TEXT = "filterText";
     private static final String KEY_NOTIFICATION_TITLE = "notificationTitle";
     private static final String KEY_NOTIFICATION_TEXT = "notificationText";
     private static final String KEY_NOTIFICATION_ORIGINAL_APP = "notificationOriginalApp";
     private static final String KEY_ENABLED = "enabled";
+
+    private static final int KEY_ID_COLUMN = 0;
+    private static final int KEY_PACKAGE_NAME_COLUMN = 1;
+    private static final int KEY_APP_NAME_COLUMN = 2;
+    private static final int KEY_FILTER_TEXT_COLUMN = 3;
+    private static final int KEY_NOTIFICATION_TITLE_COLUMN = 4;
+    private static final int KEY_NOTIFICATION_TEXT_COLUMN = 5;
+    private static final int KEY_NOTIFICATION_ORIGINAL_APP_COLUMN = 6;
+    private static final int KEY_ENABLED_COLUMN = 7;
+
 
     private static DataSetObservable dataSetObservable = new DataSetObservable();
 
@@ -57,6 +68,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         String CREATE_RULES_TABLE = "CREATE TABLE " + TABLE_RULES + "(" +
                 KEY_ID + " INTEGER PRIMARY KEY, " +
                 KEY_PACKAGE_NAME + " TEXT, " +
+                KEY_APP_NAME + " TEXT, " +
                 KEY_FILTER_TEXT + " TEXT, " +
                 KEY_NOTIFICATION_TITLE + " TEXT, " +
                 KEY_NOTIFICATION_TEXT + " TEXT, " +
@@ -67,7 +79,8 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ TABLE_RULES);
+        onCreate(sqLiteDatabase);
     }
 
     public NotificationRule getRule(int id){
@@ -75,7 +88,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         try {
             Cursor cursor = db.query(TABLE_RULES, new String[]{KEY_ID,
-                            KEY_PACKAGE_NAME, KEY_FILTER_TEXT,
+                            KEY_PACKAGE_NAME, KEY_APP_NAME, KEY_FILTER_TEXT,
                             KEY_NOTIFICATION_TITLE, KEY_NOTIFICATION_TEXT,
                             KEY_NOTIFICATION_ORIGINAL_APP, KEY_ENABLED}, KEY_ID+"=?",
                     new String[]{String.valueOf(id)}, null, null, null, null);
@@ -96,7 +109,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             ArrayList<NotificationRule> listRules = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor= db.query(TABLE_RULES, new String[]{KEY_ID,
-                            KEY_PACKAGE_NAME, KEY_FILTER_TEXT,
+                            KEY_PACKAGE_NAME, KEY_APP_NAME, KEY_FILTER_TEXT,
                             KEY_NOTIFICATION_TITLE, KEY_NOTIFICATION_TEXT,
                             KEY_NOTIFICATION_ORIGINAL_APP, KEY_ENABLED}, null,
                     null, null, null, null, null);
@@ -121,7 +134,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             ArrayList<NotificationRule> listRules = new ArrayList<>();
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor= db.query(TABLE_RULES, new String[]{KEY_ID,
-                            KEY_PACKAGE_NAME, KEY_FILTER_TEXT,
+                            KEY_PACKAGE_NAME, KEY_APP_NAME, KEY_FILTER_TEXT,
                             KEY_NOTIFICATION_TITLE, KEY_NOTIFICATION_TEXT,
                             KEY_NOTIFICATION_ORIGINAL_APP, KEY_ENABLED}, null,
                     null, null, null, null, null);
@@ -146,6 +159,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         try{
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_PACKAGE_NAME, rule.getPackageName());
+            contentValues.put(KEY_APP_NAME, rule.getAppName());
             contentValues.put(KEY_FILTER_TEXT, rule.getFilterText());
             contentValues.put(KEY_NOTIFICATION_TITLE, rule.getNewNotification().getTitle());
             contentValues.put(KEY_NOTIFICATION_TEXT, rule.getNewNotification().getText());
@@ -163,6 +177,7 @@ public class SQLHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_PACKAGE_NAME, rule.getPackageName());
+            contentValues.put(KEY_APP_NAME, rule.getAppName());
             contentValues.put(KEY_FILTER_TEXT, rule.getFilterText());
             contentValues.put(KEY_NOTIFICATION_TITLE, rule.getNewNotification().getTitle());
             contentValues.put(KEY_NOTIFICATION_TEXT, rule.getNewNotification().getText());
@@ -202,17 +217,18 @@ public class SQLHelper extends SQLiteOpenHelper {
     private NotificationRule cursorToNotificationRule(Cursor cursor) {
 
         NotificationRule rule = new NotificationRule();
-        rule.setId(cursor.getInt(0));
-        rule.setPackageName(cursor.getString(1));
-        rule.setFilterText(cursor.getString(2));
+        rule.setId(cursor.getInt(KEY_ID_COLUMN));
+        rule.setPackageName(cursor.getString(KEY_PACKAGE_NAME_COLUMN));
+        rule.setAppName(cursor.getString(KEY_APP_NAME_COLUMN));
+        rule.setFilterText(cursor.getString(KEY_FILTER_TEXT_COLUMN));
 
         NewNotification notification = new NewNotification();
-        notification.setTitle(cursor.getString(3));
-        notification.setText(cursor.getString(4));
-        notification.setOpenOriginalApp(getBooleanForInt(cursor.getInt(5)));
+        notification.setTitle(cursor.getString(KEY_NOTIFICATION_TITLE_COLUMN));
+        notification.setText(cursor.getString(KEY_NOTIFICATION_TEXT_COLUMN));
+        notification.setOpenOriginalApp(getBooleanForInt(cursor.getInt(KEY_NOTIFICATION_ORIGINAL_APP_COLUMN)));
 
         rule.setNewNotification(notification);
-        rule.setEnabled(getBooleanForInt(cursor.getInt(6)));
+        rule.setEnabled(getBooleanForInt(cursor.getInt(KEY_ENABLED_COLUMN)));
         return rule;
     }
 

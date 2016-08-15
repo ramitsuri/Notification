@@ -9,6 +9,8 @@ public class NotificationRule {
 
     private String packageName;
 
+    private String appName;
+
     private String filterText;
 
     private NewNotification newNotification;
@@ -29,6 +31,14 @@ public class NotificationRule {
 
     public void setPackageName(String packageName){
         this.packageName = packageName;
+    }
+
+    public String getAppName(){
+        return this.appName;
+    }
+
+    public void setAppName(String appName){
+        this.appName = appName;
     }
 
     public String getFilterText(){

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerViewRules = (RecyclerView) findViewById(R.id.recyclerViewRules);
         recyclerViewLManager = new LinearLayoutManager(this);
         sqlHelper = SQLHelper.getInstance(this);
-        //addDummyData();
         notificationRules = sqlHelper.getAllRules();
         recyclerViewAdapter = new RuleAdapter(notificationRules);
         NotificationListener.refreshRules(this);
@@ -55,21 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerViewRules.setAdapter(recyclerViewAdapter);
 
         setText(isNotificationAccessEnabled());
-    }
-
-    private void addDummyData() {
-        for(int i=0;i<5;i++) {
-            NotificationRule rule = new NotificationRule();
-            rule.setPackageName("com.whatsapp");
-            rule.setEnabled(true);
-            rule.setFilterText("ramit");
-            NewNotification not = new NewNotification();
-            not.setOpenOriginalApp(true);
-            not.setText("Your package has been delivered");
-            not.setTitle("Amazon Delivery");
-            rule.setNewNotification(not);
-            sqlHelper.createRule(rule);
-        }
     }
 
     @Override
@@ -94,26 +79,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setText(boolean status) {
         final Intent settingsIntent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+        Snackbar snackbar;
         if(status) {
-            Snackbar.make(findViewById(R.id.relativeLayout), getString(R.string.snackBar_access_granted), Snackbar.LENGTH_LONG)
+            snackbar = Snackbar.make(findViewById(R.id.relativeLayout), getString(R.string.snackBar_access_granted), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.snackBar_action_revoke), new View.OnClickListener(){
 
                         @Override
                         public void onClick(View view) {
                             startActivity(settingsIntent);
                         }
-                    }).show();
+                    });
+
         }
         else{
-            Snackbar.make(findViewById(R.id.relativeLayout), getString(R.string.snackBar_grant_access), Snackbar.LENGTH_INDEFINITE)
+            snackbar = Snackbar.make(findViewById(R.id.relativeLayout), getString(R.string.snackBar_grant_access), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.snackBar_action_grant), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             startActivity(settingsIntent);
                         }
-                    }).show();
+                    });
         }
-
+        snackbar.getView().setBackgroundColor(Color.parseColor("#222222"));
+        snackbar.show();
     }
 
 
