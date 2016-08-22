@@ -24,7 +24,8 @@ public class NotificationHelper {
         return helper;
     }
 
-    public void generateNewNotification(Context context, Notification notification, NotificationRule rule) {
+    public void generateNewNotification(Context context, StatusBarNotification statusBarNotification, NotificationRule rule) {
+        Notification notification = statusBarNotification.getNotification();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
         notificationCompat.setContentTitle(rule.getNewNotification().getTitle())
@@ -35,7 +36,7 @@ public class NotificationHelper {
         if(rule.getNewNotification().getOpenOriginalApp())
                     notificationCompat.setContentIntent(notification.contentIntent);
 
-        notificationManager.notify((int)System.currentTimeMillis(),notificationCompat.build());
+        notificationManager.notify(statusBarNotification.getId(), notificationCompat.build());
     }
 
     public boolean isMonitoredNotification(StatusBarNotification sbn, NotificationRule rule) {

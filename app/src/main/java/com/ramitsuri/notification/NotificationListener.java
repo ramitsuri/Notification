@@ -45,7 +45,7 @@ public class NotificationListener extends android.service.notification.Notificat
                 if (sbn.getPackageName().equalsIgnoreCase(rule.getPackageName())) {
                     if (notificationHelper.isMonitoredNotification(sbn, rule)) {
                         NotificationListener.this.cancelNotification(sbn.getKey());
-                        notificationHelper.generateNewNotification(getApplicationContext(), sbn.getNotification(), rule);
+                        notificationHelper.generateNewNotification(getApplicationContext(), sbn, rule);
                         break;
                     }
                 }
@@ -55,6 +55,11 @@ public class NotificationListener extends android.service.notification.Notificat
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
+
+    }
+
+    @Override
+    public void onListenerDisconnected(){
 
     }
 }
