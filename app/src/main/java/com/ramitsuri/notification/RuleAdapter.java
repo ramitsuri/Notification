@@ -1,5 +1,6 @@
 package com.ramitsuri.notification;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ramitsuri.notification.db.SQLHelper;
 
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHolder>  {
 
     private ArrayList<NotificationRule> rules;
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
+    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         protected TextView appName;
         protected TextView filterText;
         protected TextView notificationTitle;
@@ -45,6 +47,14 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
                     NotificationListener.refreshRules(compoundButton.getContext());
                 }
             });
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent addRuleActivityIntent = new Intent(view.getContext(), AddRuleActivity.class);
+            addRuleActivityIntent.setAction(AddRuleActivity.ACTION_EDIT);
+            view.getContext().startActivity(addRuleActivityIntent);
         }
     }
 

@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if(view.getId() == R.id.fab) {
             Intent addRuleActivityIntent = new Intent(this, AddRuleActivity.class);
+            addRuleActivityIntent.setAction(AddRuleActivity.ACTION_CREATE);
             MainActivity.this.startActivity(addRuleActivityIntent);
         }
     }

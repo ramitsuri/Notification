@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="schemas.android.com/tools"
+    tools:context="com.example.sample.YourActivity"
+    xmlns:notification="http://schemas.android.com/apk/res-auto" >
+    <item
+        android:id="@+id/action_done_after_edit"
+        android:orderInCategory="100"
+        android:title="Save"
+        notification:showAsAction="always"
+        />
+    <item
+        android:id="@+id/action_delete"
+        android:orderInCategory="200"
+        android:title="Delete"
+        notification:showAsAction="always"
+        />
+</menu>

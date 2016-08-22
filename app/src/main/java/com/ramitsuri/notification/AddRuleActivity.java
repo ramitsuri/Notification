@@ -1,5 +1,6 @@
 package com.ramitsuri.notification;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,11 +34,16 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     EditText editTextText;
     CheckBox checkBoxOriginalApp;
     SwitchCompat switchEnabled;
+    int startMode = 0;
+
+    public static String ACTION_CREATE = "action_create";
+    public static String ACTION_EDIT = "action_edit";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rule);
+        setStartMode();
         spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
         editTextFilter = (EditText)findViewById(R.id.editTextFilter);
         editTextTitle = (EditText)findViewById(R.id.editTextTitle);
@@ -53,6 +59,25 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPackages.setAdapter(spinnerAdapter);
         spinnerPackages.setOnItemSelectedListener(this);
+        configureViews();
+    }
+
+    private void configureViews() {
+
+    }
+
+    private void setStartMode() {
+        Intent startIntent = getIntent();
+        String action = startIntent.getAction();
+        if(action == ACTION_CREATE) {
+            startMode = 0;
+            this.setTitle("Add new rule");
+        }
+        else if(action == ACTION_EDIT) {
+            startMode = 1;
+            this.setTitle("Edit rule");
+        }
+
     }
 
     public ArrayList<Application> getApplications() {
@@ -83,7 +108,14 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_add_rule, menu);
+        if(startMode == 0) {
+
+            inflater.inflate(R.menu.menu_add_rule, menu);
+
+        }
+        else if(startMode == 1){
+            inflater.inflate(R.menu.menu_add_rule_edit, menu);
+        }
         return true;
     }
 
@@ -93,6 +125,15 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
             case R.id.action_done: {
                 addRule();
                 this.finish();
+                return true;
+            }
+            case R.id.action_delete:{
+                Toast.makeText(this, "delete", Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+            case R.id.action_done_after_edit:{
+
                 return true;
             }
             default:
