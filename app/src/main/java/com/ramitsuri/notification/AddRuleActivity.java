@@ -1,8 +1,6 @@
 package com.ramitsuri.notification;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
@@ -15,19 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.ramitsuri.notification.db.SQLHelper;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 public class AddRuleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Spinner spinnerPackages;
-    private ArrayList<Application> applications;
-    private PackageManager packageManager;
+    public static ArrayList<Application> applications;
     SQLHelper sqlHelper;
     Application selectedApplication;
     EditText editTextFilter;
@@ -58,10 +50,8 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
         switchEnabled = (SwitchCompat)findViewById(R.id.checkBox2);
         switchEnabled.setChecked(true);
 
-        packageManager = getPackageManager();
-        applications = getApplications();
         sqlHelper = SQLHelper.getInstance(this);
-        spinnerAdapter = new ArrayAdapter<Application>(this, android.R.layout.simple_spinner_item, applications);
+        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, applications);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPackages.setAdapter(spinnerAdapter);
         spinnerPackages.setOnItemSelectedListener(this);
@@ -101,20 +91,6 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
         editTextTitle.setText(ruleFromClickEvent.getNewNotification().getTitle());
         checkBoxOriginalApp.setChecked(ruleFromClickEvent.getNewNotification().getOpenOriginalApp());
         switchEnabled.setChecked(ruleFromClickEvent.getIsEnabled());
-    }
-
-
-    public ArrayList<Application> getApplications() {
-        applications = new ArrayList<Application>();
-        List<ApplicationInfo> packages = packageManager.getInstalledApplications(0);
-        for (ApplicationInfo packageInfo : packages) {
-            if( packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null ){
-                String appName = packageManager.getApplicationLabel(packageInfo).toString();
-                applications.add(new Application(packageInfo.packageName, appName));
-            }
-        }
-        Collections.sort(applications);
-        return applications;
     }
 
     @Override
