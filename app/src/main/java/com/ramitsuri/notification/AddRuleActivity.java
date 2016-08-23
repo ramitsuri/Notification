@@ -22,6 +22,7 @@ import com.ramitsuri.notification.db.SQLHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class AddRuleActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Spinner spinnerPackages;
@@ -34,51 +35,74 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     EditText editTextText;
     CheckBox checkBoxOriginalApp;
     SwitchCompat switchEnabled;
+    ArrayAdapter<Application> spinnerAdapter;
     int startMode = 0;
-
+    NotificationRule ruleFromClickEvent;
     public static String ACTION_CREATE = "action_create";
     public static String ACTION_EDIT = "action_edit";
+    public static String RULE_TO_EDIT = "ruleToEdit";
+    public static int MODE_CREATE = 0;
+    public static int MODE_EDIT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_rule);
-        setStartMode();
+
         spinnerPackages = (Spinner) findViewById(R.id.spinnerPackages);
         editTextFilter = (EditText)findViewById(R.id.editTextFilter);
         editTextTitle = (EditText)findViewById(R.id.editTextTitle);
         editTextText = (EditText)findViewById(R.id.editTextText);
         checkBoxOriginalApp = (CheckBox)findViewById(R.id.checkBoxOriginalApp);
+        checkBoxOriginalApp.setChecked(true);
         switchEnabled = (SwitchCompat)findViewById(R.id.checkBox2);
-
+        switchEnabled.setChecked(true);
 
         packageManager = getPackageManager();
         applications = getApplications();
         sqlHelper = SQLHelper.getInstance(this);
-        ArrayAdapter<Application> spinnerAdapter = new ArrayAdapter<Application>(this, android.R.layout.simple_spinner_item, applications);
+        spinnerAdapter = new ArrayAdapter<Application>(this, android.R.layout.simple_spinner_item, applications);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPackages.setAdapter(spinnerAdapter);
         spinnerPackages.setOnItemSelectedListener(this);
-        configureViews();
+        setStartMode();
     }
 
-    private void configureViews() {
-
-    }
 
     private void setStartMode() {
         Intent startIntent = getIntent();
         String action = startIntent.getAction();
-        if(action == ACTION_CREATE) {
-            startMode = 0;
+        if(action.equals(ACTION_CREATE)) {
+            startMode = MODE_CREATE;
             this.setTitle("Add new rule");
         }
-        else if(action == ACTION_EDIT) {
-            startMode = 1;
+        else if(action.equals(ACTION_EDIT)) {
+            startMode = MODE_EDIT;
             this.setTitle("Edit rule");
+            ruleFromClickEvent = getIntent().getParcelableExtra(RULE_TO_EDIT);
+            configureViews();
         }
 
     }
+
+    private void configureViews() {
+        Application app = new Application("","");
+        for (Application application:applications) {
+            if(application.getPackageName().contentEquals(ruleFromClickEvent.getPackageName())) {
+                app = application;
+                break;
+            }
+        }
+        if(!Objects.equals(app.getApplicationName(), ""))
+            spinnerPackages.setSelection(spinnerAdapter.getPosition(app));
+
+        editTextFilter.setText(ruleFromClickEvent.getFilterText());
+        editTextText.setText(ruleFromClickEvent.getNewNotification().getText());
+        editTextTitle.setText(ruleFromClickEvent.getNewNotification().getTitle());
+        checkBoxOriginalApp.setChecked(ruleFromClickEvent.getNewNotification().getOpenOriginalApp());
+        switchEnabled.setChecked(ruleFromClickEvent.getIsEnabled());
+    }
+
 
     public ArrayList<Application> getApplications() {
         applications = new ArrayList<Application>();
@@ -108,12 +132,12 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        if(startMode == 0) {
+        if(startMode == MODE_CREATE) {
 
             inflater.inflate(R.menu.menu_add_rule, menu);
 
         }
-        else if(startMode == 1){
+        else if(startMode == MODE_EDIT){
             inflater.inflate(R.menu.menu_add_rule_edit, menu);
         }
         return true;
@@ -128,18 +152,31 @@ public class AddRuleActivity extends AppCompatActivity implements AdapterView.On
                 return true;
             }
             case R.id.action_delete:{
-                Toast.makeText(this, "delete", Toast.LENGTH_LONG).show();
+                sqlHelper.deleteRule(ruleFromClickEvent);
+                this.finish();
                 return true;
             }
 
             case R.id.action_done_after_edit:{
-
+                editRule();
+                this.finish();
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void editRule() {
+        ruleFromClickEvent.setPackageName(selectedApplication.getPackageName());
+        ruleFromClickEvent.setAppName(selectedApplication.getApplicationName());
+        ruleFromClickEvent.setFilterText(editTextFilter.getText().toString());
+        ruleFromClickEvent.setEnabled(switchEnabled.isChecked());
+        ruleFromClickEvent.getNewNotification().setText(editTextText.getText().toString());
+        ruleFromClickEvent.getNewNotification().setTitle(editTextTitle.getText().toString());
+        ruleFromClickEvent.getNewNotification().setOpenOriginalApp(checkBoxOriginalApp.isChecked());
+        sqlHelper.editRule(ruleFromClickEvent);
     }
 
     private void addRule() {

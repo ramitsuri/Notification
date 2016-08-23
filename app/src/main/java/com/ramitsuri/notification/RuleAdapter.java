@@ -52,8 +52,10 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.CustomViewHold
 
         @Override
         public void onClick(View view) {
+            NotificationRule rule = rules.get(getAdapterPosition());
             Intent addRuleActivityIntent = new Intent(view.getContext(), AddRuleActivity.class);
             addRuleActivityIntent.setAction(AddRuleActivity.ACTION_EDIT);
+            addRuleActivityIntent.putExtra(AddRuleActivity.RULE_TO_EDIT, rule);
             view.getContext().startActivity(addRuleActivityIntent);
         }
     }
