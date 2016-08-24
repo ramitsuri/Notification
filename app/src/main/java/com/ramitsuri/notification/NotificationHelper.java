@@ -30,7 +30,7 @@ public class NotificationHelper {
         NotificationCompat.Builder notificationCompat = new NotificationCompat.Builder(context);
         notificationCompat.setContentTitle(rule.getNewNotification().getTitle())
                     .setContentText(rule.getNewNotification().getText())
-                    .setSmallIcon(android.R.drawable.ic_notification_clear_all)
+                    .setSmallIcon(R.drawable.ic_stat_notification_notification)
                     .setVibrate(new long[]{10,400})
                     .setAutoCancel(true);
         if(rule.getNewNotification().getOpenOriginalApp())
